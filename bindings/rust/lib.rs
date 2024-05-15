@@ -7,7 +7,7 @@
 //! let code = r#"
 //! "#;
 //! let mut parser = tree_sitter::Parser::new();
-//! parser.set_language(&tree_sitter_YOUR_LANGUAGE_NAME::language()).expect("Error loading YourLanguageName grammar");
+//! parser.set_language(&tree_sitter_fusor::language()).expect("Error loading YourLanguageName grammar");
 //! let tree = parser.parse(code, None).unwrap();
 //! assert!(!tree.root_node().has_error());
 //! ```
@@ -20,14 +20,14 @@
 use tree_sitter::Language;
 
 extern "C" {
-    fn tree_sitter_YOUR_LANGUAGE_NAME() -> Language;
+    fn tree_sitter_fusor() -> Language;
 }
 
 /// Get the tree-sitter [Language][] for this grammar.
 ///
 /// [Language]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Language.html
 pub fn language() -> Language {
-    unsafe { tree_sitter_YOUR_LANGUAGE_NAME() }
+    unsafe { tree_sitter_fusor() }
 }
 
 /// The content of the [`node-types.json`][] file for this grammar.
