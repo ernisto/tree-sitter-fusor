@@ -2861,16 +2861,16 @@
   ],
   "conflicts": [
     [
-      "_expr",
-      "assignment"
-    ],
-    [
       "_stat",
       "_expr"
     ],
     [
       "_def",
       "_expr"
+    ],
+    [
+      "_expr",
+      "assignment"
     ],
     [
       "_path",

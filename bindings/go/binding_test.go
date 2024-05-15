@@ -1,14 +1,14 @@
-package tree_sitter_YOUR_LANGUAGE_NAME_test
+package tree_sitter_fusor_test
 
 import (
 	"testing"
 
 	tree_sitter "github.com/smacker/go-tree-sitter"
-	"github.com/tree-sitter/tree-sitter-YOUR_LANGUAGE_NAME"
+	"github.com/tree-sitter/tree-sitter-fusor"
 )
 
 func TestCanLoadGrammar(t *testing.T) {
-	language := tree_sitter.NewLanguage(tree_sitter_YOUR_LANGUAGE_NAME.Language())
+	language := tree_sitter.NewLanguage(tree_sitter_fusor.Language())
 	if language == nil {
 		t.Errorf("Error loading YourLanguageName grammar")
 	}
