@@ -211,10 +211,12 @@ module.exports = grammar({
             optional(';'), '}',
         ),
         func: $ => seq('|', list(field('params', $.binding)), '|', field('body', $._body)),
+
+        arrowBody: $ => seq('=>', field('return', $._expr)),
         _body: $ => choice(
-            seq('=>', field('return', $._expr)),
-            $._stat,
+            $.arrowBody,
             $.scope,
+            $._stat,
         ),
 
         // Partial credit to https://github.com/tree-sitter/tree-sitter-javascript/blob/15e85e80b851983fab6b12dce5a535f5a0df0f9c/grammar.js#L906
