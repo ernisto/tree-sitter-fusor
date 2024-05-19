@@ -2,6 +2,8 @@
 Cargo.lock
 target/
 
+tools/*.js
+
 # Node artifacts
 build/
 prebuilds/
