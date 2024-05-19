@@ -44,7 +44,7 @@ module.exports = grammar({
         )),
         
         _decorator: $ => seq('@', choice($.callment, $._path)),
-        _destructure: $ => seq('(', field('destructures', list1($.binding)), ')'),
+        _destructure: $ => seq('(', list1(field('destructures', $.binding)), ')'),
         binding: $ => seq(
             field('decorators', repeat($._decorator)),
             // optional(field('lifetime', $.lifetime)),
@@ -82,7 +82,7 @@ module.exports = grammar({
             optional(seq('else', field('else', $._body))),
         )),
         for_each: $ => seq(
-            'for', field('bindings', list1($.binding)),
+            'for', list1(field('bindings', $.binding)),
             'in', field('target', $._expr),
             optional('do'), field('body', $._body)
         ),
@@ -100,14 +100,14 @@ module.exports = grammar({
         _def: $ => choice($.var_def, $.func_def, $.impl_def),
         var_def: $ => seq(
             field('decorators', repeat($._decorator)),
-            'let', field('bindings', list1($.binding))
+            'let', list1(field('bindings', $.binding))
         ),
         func_def: $ => seq(
             field('decorators', repeat($._decorator)),
             'func', field('self', optional($.tuple)), 
             field('name', $.identifier),
-            optional(seq('<', field('bindings', list($.binding)), '>')),
-            '(', list($.binding), ')',
+            optional(seq('<', list(field('type_params', $.binding)), '>')),
+            '(', list(field('params', $.binding)), ')',
             optional(seq('->',
                 // optional(field('lifetime', $.lifetime)),
                 field('return_type', $._path)
@@ -140,7 +140,7 @@ module.exports = grammar({
             $.xor, $.xnor,
             $.or, $.nor,
         ),
-        subscript: $ => prec(16, seq(field('base', $._expr), '[', field('indexes', list1($._expr)), ']')),
+        subscript: $ => prec(16, seq(field('base', $._expr), '[', list1(field('indexes', $._expr)), ']')),
         callment: $ => prec(15, seq(
             field('base', $._expr),
             // optional(seq('<', field('fields', list1($._expr)), '>')),
@@ -200,17 +200,17 @@ module.exports = grammar({
         boolean: $ => choice('true', 'false'),
         null: $ => 'null',
         undefined: $ => 'undefined',
-        tuple: $ => seq('(', field('fields', list(choice($.field, $._expr))), ')'),
+        tuple: $ => seq('(', list(field('fields', choice($.field, $._expr))), ')'),
         _last_stat: $ => choice($.return, $.break, $.skip),
         skip: $ => seq('skip', /*field('lifetime', $.lifetime)*/),
         break: $ => seq('break', /*field('lifetime', $.lifetime)*/),
         return: $ => seq('return', /*field('lifetime', $.lifetime),*/ field('expr', $._expr)),
         scope: $ => seq(
-            '{', repeat(seq($._stat, optional(';'))),
+            '{', repeat(seq(field('stats', $._stat), optional(';'))),
             choice(field('return', $._expr), field('last_stat', $._last_stat)),
             optional(';'), '}',
         ),
-        func: $ => seq('|', field('params', list($.binding)), '|', field('body', $._body)),
+        func: $ => seq('|', list(field('params', $.binding)), '|', field('body', $._body)),
         _body: $ => choice(
             seq('=>', field('return', $._expr)),
             $._stat,
